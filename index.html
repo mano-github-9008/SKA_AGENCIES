@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/SRI KRISHNA AGENCIES.png" />
+  <meta name="theme-color" content="#102b46" />
+  <title>SK Agencies | Sign In</title>
+  <style>
+    :root {
+      --navy: #102b46;
+      --navy-deep: #0a1d32;
+      --blue: #1769aa;
+      --blue-light: #eaf4ff;
+      --ink: #172b3a;
+      --muted: #6c7d8b;
+      --line: #dce5ed;
+      --white: #ffffff;
+      --success: #16804a;
+      --error: #c0392b;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 16px;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 15%, rgba(66, 153, 225, .13), transparent 28%),
+        radial-gradient(circle at 90% 85%, rgba(23, 105, 170, .10), transparent 26%),
+        #f3f7fb;
+    }
+
+    .shell {
+      width: min(960px, 100%);
+      min-height: 570px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid rgba(16, 43, 70, .08);
+      border-radius: 24px;
+      box-shadow: 0 24px 70px rgba(16, 43, 70, .13);
+    }
+
+    .brand-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 42px;
+      color: white;
+      overflow: hidden;
+      background: linear-gradient(145deg, var(--navy), #174f7c 72%, #1d6b9c);
+    }
+    .brand-panel::before,
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .brand-panel::before { width: 360px; height: 360px; right: -160px; top: -100px; }
+    .brand-panel::after { width: 270px; height: 270px; right: -115px; top: -55px; }
+
+    .brand, .brand-copy, .brand-footer { position: relative; z-index: 1; }
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .brand-mark {
+      width: 48px; height: 48px;
+      display: grid; place-items: center;
+      border-radius: 14px;
+      color: var(--navy);
+      background: white;
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: -1px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    }
+    .brand-name { margin: 0; font-size: 18px; font-weight: 750; letter-spacing: .2px; }
+    .brand-caption { margin: 4px 0 0; color: #c5d9e9; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; }
+
+    .brand-copy { margin: 64px 0; max-width: 360px; }
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 11px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 99px;
+      background: rgba(255,255,255,.08);
+      color: #e3f1fc;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .brand-copy h1 { margin: 20px 0 14px; font-size: clamp(30px, 4vw, 43px); line-height: 1.12; letter-spacing: -1.2px; }
+    .brand-copy p { margin: 0; color: #d3e2ee; font-size: 15px; line-height: 1.8; }
+    .brand-footer { color: #b8d0e2; font-size: 12px; }
+
+    .form-panel { display: flex; flex-direction: column; justify-content: center; padding: 48px clamp(28px, 5vw, 58px); }
+    .top-row { display: flex; align-items: center; justify-content: flex-end; margin-bottom: 36px; }
+    .language-wrap { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .language-wrap select {
+      padding: 8px 30px 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink);
+      background: white;
+      font: inherit;
+      cursor: pointer;
+    }
+    .welcome h2 { margin: 0; font-size: 29px; letter-spacing: -.7px; color: var(--navy); }
+    .welcome p { margin: 9px 0 28px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    .form-group { margin-bottom: 19px; }
+    label { display: block; margin-bottom: 8px; color: #344b5c; font-size: 13px; font-weight: 650; }
+    .input-wrap { position: relative; }
+    .input-wrap svg {
+      position: absolute; top: 50%; left: 14px; transform: translateY(-50%);
+      width: 18px; height: 18px; color: #8093a3; pointer-events: none;
+    }
+    input {
+      width: 100%; height: 49px; padding: 0 44px;
+      border: 1px solid var(--line); border-radius: 11px;
+      outline: none; background: #fbfdff; color: var(--ink);
+      font: inherit; font-size: 14px;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+    input::placeholder { color: #a2afba; }
+    input:focus { border-color: #4a94d0; background: white; box-shadow: 0 0 0 4px rgba(23,105,170,.11); }
+    .toggle-password {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      width: 34px; height: 34px; display: grid; place-items: center;
+      padding: 0; border: 0; border-radius: 8px; background: transparent;
+      color: #718596; cursor: pointer;
+    }
+    .toggle-password:hover { background: var(--blue-light); }
+    .toggle-password svg { position: static; transform: none; width: 18px; height: 18px; }
+
+    .submit-btn {
+      width: 100%; min-height: 50px; margin-top: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      border: 0; border-radius: 11px; color: white;
+      background: linear-gradient(110deg, #1769aa, #14588f);
+      font: inherit; font-size: 14px; font-weight: 700;
+      box-shadow: 0 9px 18px rgba(23,105,170,.2);
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 22px rgba(23,105,170,.27); }
+    .submit-btn:active { transform: translateY(0); }
+    .message { min-height: 21px; margin: 15px 0 0; text-align: center; font-size: 13px; line-height: 1.5; }
+    .message.success { color: var(--success); }
+    .message.error { color: var(--error); }
+    .secure-note { display: flex; justify-content: center; align-items: center; gap: 7px; margin-top: 27px; color: #8797a4; font-size: 11px; }
+    .secure-note svg { width: 14px; height: 14px; }
+    .mobile-brand { display: none; }
+
+    @media (max-width: 700px) {
+      body { padding: 16px; }
+      .shell { grid-template-columns: 1fr; max-width: 440px; min-height: auto; border-radius: 20px; }
+      .brand-panel { display: none; }
+      .form-panel { padding: 27px 25px 30px; }
+      .top-row { justify-content: space-between; margin-bottom: 27px; }
+      .mobile-brand { display: flex; align-items: center; gap: 10px; }
+      .mobile-brand .brand-mark { width: 39px; height: 39px; border: 1px solid var(--line); border-radius: 11px; background: var(--blue-light); }
+      .mobile-brand .brand-name { color: var(--navy); font-size: 14px; }
+      .mobile-brand .brand-caption { color: var(--muted); font-size: 9px; letter-spacing: 1px; }
+      .welcome h2 { font-size: 27px; }
+      .welcome p { margin-bottom: 25px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="brand-panel" aria-label="SK Agencies">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">SK</div>
+        <div>
+          <p class="brand-name">SK Agencies</p>
+          <p class="brand-caption" data-i18n="brandCaption">Business Portal</p>
+        </div>
+      </div>
+      <div class="brand-copy">
+        <span class="eyebrow" data-i18n="eyebrow">WELCOME BACK</span>
+        <h1 data-i18n="heroTitle">Your business, made simpler.</h1>
+        <p data-i18n="heroText">Sign in to continue to your billing workspace and manage your daily business operations.</p>
+      </div>
+      <div class="brand-footer" data-i18n="footer">Reliable service. Clear records. Better business.</div>
+    </section>
+
+    <section class="form-panel">
+      <div class="top-row">
+        <div class="mobile-brand">
+          <div class="brand-mark" aria-hidden="true">SK</div>
+          <div>
+            <p class="brand-name">SK Agencies</p>
+            <p class="brand-caption" data-i18n="brandCaption">Business Portal</p>
+          </div>
+        </div>
+        <div class="language-wrap">
+          <label for="language" data-i18n="languageLabel" style="margin:0;">Language</label>
+          <select id="language" aria-label="Choose language">
+            <option value="en">English</option>
+            <option value="ta">தமிழ்</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="welcome">
+        <h2 data-i18n="loginTitle">Sign in to your account</h2>
+        <p data-i18n="loginSubtitle">Enter your details below to access your account.</p>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="username" data-i18n="usernameLabel">Username</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+            <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" data-i18n="passwordLabel">Password</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+            <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required />
+            <button class="toggle-password" id="togglePassword" type="button" aria-label="Show password" title="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="submit-btn" type="submit">
+          <span data-i18n="loginButton">Sign In</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </button>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="secure-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+        <span data-i18n="secureNote">Please keep your login details private.</span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const translations = {
+      en: {
+        brandCaption: "Business Portal",
+        eyebrow: "WELCOME BACK",
+        heroTitle: "Your business, made simpler.",
+        heroText: "Sign in to continue to your billing workspace and manage your daily business operations.",
+        footer: "Reliable service. Clear records. Better business.",
+        languageLabel: "Language",
+        loginTitle: "Sign in to your account",
+        loginSubtitle: "Enter your details below to access your account.",
+        usernameLabel: "Username",
+        passwordLabel: "Password",
+        usernamePlaceholder: "Enter your username",
+        passwordPlaceholder: "Enter your password",
+        loginButton: "Sign In",
+        secureNote: "Please keep your login details private.",
+        missing: "Please enter both username and password.",
+        invalid: "Invalid username or password. Please try again.",
+        success: "Login successful. Redirecting…",
+        showPassword: "Show password",
+        hidePassword: "Hide password"
+      },
+      ta: {
+        brandCaption: "வணிகத் தளம்",
+        eyebrow: "மீண்டும் வரவேற்கிறோம்",
+        heroTitle: "உங்கள் வணிகம் இனி எளிதாக.",
+        heroText: "உங்கள் பில்லிங் பக்கத்திற்குச் சென்று அன்றாட வணிகப் பணிகளை நிர்வகிக்க உள்நுழையவும்.",
+        footer: "நம்பகமான சேவை. தெளிவான பதிவுகள். சிறந்த வணிகம்.",
+        languageLabel: "மொழி",
+        loginTitle: "உங்கள் கணக்கில் உள்நுழையவும்",
+        loginSubtitle: "உங்கள் கணக்கை அணுக கீழே உள்ள விவரங்களை உள்ளிடவும்.",
+        usernameLabel: "பயனர்பெயர்",
+        passwordLabel: "கடவுச்சொல்",
+        usernamePlaceholder: "உங்கள் பயனர்பெயரை உள்ளிடவும்",
+        passwordPlaceholder: "உங்கள் கடவுச்சொல்லை உள்ளிடவும்",
+        loginButton: "உள்நுழை",
+        secureNote: "உங்கள் உள்நுழைவு விவரங்களை ரகசியமாக வைத்திருக்கவும்.",
+        missing: "பயனர்பெயர் மற்றும் கடவுச்சொல் இரண்டையும் உள்ளிடவும்.",
+        invalid: "பயனர்பெயர் அல்லது கடவுச்சொல் தவறானது. மீண்டும் முயற்சிக்கவும்.",
+        success: "உள்நுழைவு வெற்றிகரமாக முடிந்தது. மாற்றப்படுகிறது…",
+        showPassword: "கடவுச்சொல்லைக் காட்டு",
+        hidePassword: "கடவுச்சொல்லை மறை"
+      }
+    };
+
+    const languageSelect = document.getElementById("language");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("message");
+    const togglePassword = document.getElementById("togglePassword");
+
+    function setLanguage(language) {
+      const t = translations[language] || translations.en;
+      document.documentElement.lang = language === "ta" ? "ta" : "en";
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        if (t[key]) element.textContent = t[key];
+      });
+      usernameInput.placeholder = t.usernamePlaceholder;
+      passwordInput.placeholder = t.passwordPlaceholder;
+      togglePassword.setAttribute("aria-label", passwordInput.type === "password" ? t.showPassword : t.hidePassword);
+      togglePassword.title = passwordInput.type === "password" ? t.showPassword : t.hidePassword;
+      message.textContent = "";
+      message.className = "message";
+    }
+
+    languageSelect.addEventListener("change", (event) => setLanguage(event.target.value));
+
+    togglePassword.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+      passwordInput.type = isHidden ? "text" : "password";
+      setLanguage(languageSelect.value);
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const t = translations[languageSelect.value] || translations.en;
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!username || !password) {
+        message.className = "message error";
+        message.textContent = t.missing;
+        return;
+      }
+
+      // Demo-only credentials. Use server-side authentication for production.
+      if (username === "maya" && password === "4470") {
+        message.className = "message success";
+        message.textContent = t.success;
+        window.location.href = "bill.html";
+      } else {
+        message.className = "message error";
+        message.textContent = t.invalid;
+      }
+    });
+  </script>
+</body>
+</html>

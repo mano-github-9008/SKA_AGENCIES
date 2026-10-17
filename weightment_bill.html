@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Weighment Bill — Thermal Printer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111;
+      --muted: #697168;
+      --accent: #315e49;
+      --paper: #fff;
+      --bg: #edf0eb
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.25;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .toolbar {
+      max-width: 980px;
+      margin: 22px auto 12px;
+      padding: 0 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap
+    }
+
+    .toolbar p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    button {
+      border: 1px solid #c8d0c7;
+      background: white;
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto 32px;
+      padding: 0 18px
+    }
+
+    .sheet {
+      background: var(--paper);
+      max-width: 58mm;
+      margin: 0 auto;
+      padding: 12px 8px;
+      box-shadow: 0 12px 36px #24342412;
+      border: 1px solid #e4e7e1;
+    }
+
+    .brand {
+      text-align: center;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #000
+    }
+
+    .brand h1 {
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      margin: 0 0 4px;
+      font-weight: 800
+    }
+
+    .brand .address {
+      font-size: 12.5px;
+      margin: 2px 0;
+      font-weight: 400;
+      color: #222
+    }
+
+    .brand .phone {
+      font-size: 14px;
+      font-weight: 800;
+      margin-top: 4px
+    }
+
+    .meta {
+      display: block;
+      padding: 8px 0;
+      border-bottom: 1px dashed #000;
+      font-size: 13.5px
+    }
+
+    .receipt-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px
+    }
+
+    .receipt-top-row .no-label {
+      font-weight: 800;
+      font-size: 14px
+    }
+
+    .receipt-top-row .type-label {
+      font-weight: 800;
+      font-size: 14px
+    }
+
+    .receipt-top-row .date-label {
+      font-weight: 700;
+      font-size: 13px
+    }
+
+    .customer {
+      font-size: 13.5px;
+      font-weight: 800;
+      margin: 6px 0
+    }
+
+    .meta-line {
+      display: flex;
+      gap: 4px;
+      align-items: baseline;
+      margin: 3px 0;
+      font-weight: 700
+    }
+
+    .meta-line.regular-line {
+      font-weight: 700
+    }
+
+    .meta-line strong {
+      white-space: nowrap;
+      font-weight: 700
+    }
+
+    input,
+    textarea {
+      font: inherit;
+      color: inherit;
+      border: 1px dashed transparent;
+      background: transparent;
+      border-radius: 2px;
+      padding: 1px 2px;
+      width: 100%;
+      min-width: 0;
+      font-weight: inherit;
+    }
+
+    input:hover,
+    textarea:hover,
+    input:focus,
+    textarea:focus {
+      border-color: #9eb2a2;
+      background: #f8fbf7;
+      outline: none
+    }
+
+    input:focus,
+    textarea:focus {
+      border-style: solid
+    }
+
+    .item-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      border-bottom: 1px dashed #000;
+      padding-bottom: 6px
+    }
+
+    .item-table th {
+      text-align: left;
+      font-size: 13.5px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #000;
+      font-weight: 800
+    }
+
+    .item-table td {
+      padding: 4px 0;
+      vertical-align: middle;
+      font-size: 14px;
+      font-weight: 800
+    }
+
+    .item-table th:first-child,
+    .item-table td:first-child {
+      width: 28px
+    }
+
+    .item-table .desc {
+      font-weight: 800;
+      font-size: 14px
+    }
+
+    .remove {
+      padding: 2px 4px;
+      font-size: 10px;
+      border-radius: 4px
+    }
+
+    .summary {
+      margin-top: 8px;
+      border-bottom: 1px dashed #000;
+      padding-bottom: 8px;
+      font-size: 13.5px;
+      font-weight: 800
+    }
+
+    .sumrow {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      padding: 2px 0;
+      font-weight: 800
+    }
+
+    .sumrow .value {
+      text-align: right;
+      font-weight: 800
+    }
+
+    .sumrow.net-divider {
+      margin-top: 2px;
+      padding-top: 2px
+    }
+
+    .sumrow.total {
+      font-size: 14.5px;
+      margin-top: 2px;
+      padding-top: 2px;
+      font-weight: 800
+    }
+
+    .sumrow.rate input {
+      text-align: right;
+      font-weight: 800
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 10px
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 16px auto 0;
+      max-width: 58mm
+    }
+
+    @page {
+      size: 58mm auto;
+      margin: 0
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact
+      }
+
+      html,
+      body {
+        width: 58mm !important;
+        min-width: 58mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        color: #000 !important;
+        font-family: 'Roboto', Arial, sans-serif !important;
+        font-size: 9.5pt !important;
+        line-height: 1.25 !important;
+        font-weight: 400 !important;
+      }
+
+      .toolbar,
+      .note,
+      .remove-col,
+      .add-item,
+      #reset {
+        display: none !important
+      }
+
+      main {
+        width: 58mm !important;
+        max-width: 58mm !important;
+        margin: 0 !important;
+        padding: 0 !important
+      }
+
+      .sheet {
+        width: 58mm !important;
+        max-width: 58mm !important;
+        margin: 0 !important;
+        padding: 1mm 2mm !important;
+        border: 0 !important;
+        box-shadow: none !important
+      }
+
+      .brand {
+        padding: 0 0 1.5mm !important;
+        border-bottom: 1px dashed #000 !important
+      }
+
+      .brand h1 {
+        font-size: 11.5pt !important;
+        margin: 0 0 1mm !important;
+        font-weight: 800 !important
+      }
+
+      .brand .address {
+        font-size: 8.5pt !important;
+        line-height: 1.15 !important;
+        margin: 0 !important;
+        font-weight: 400 !important
+      }
+
+      .brand .phone {
+        font-size: 9.5pt !important;
+        margin-top: 1mm !important;
+        font-weight: 800 !important
+      }
+
+      .receipt-top-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        font-size: 9pt !important;
+        margin-bottom: 1mm !important
+      }
+
+      .receipt-top-row .no-label {
+        font-weight: 800 !important
+      }
+
+      .receipt-top-row .type-label {
+        font-weight: 800 !important
+      }
+
+      .receipt-top-row .date-label {
+        font-weight: 700 !important
+      }
+
+      .meta {
+        display: block !important;
+        padding: 1.5mm 0 !important;
+        border-bottom: 1px dashed #000 !important;
+        font-size: 9pt !important
+      }
+
+      .meta-line {
+        display: flex !important;
+        gap: 1mm !important;
+        margin: 0.8mm 0 !important;
+        min-width: 0 !important;
+        font-weight: 700 !important
+      }
+
+      .customer {
+        font-size: 9.5pt !important;
+        font-weight: 800 !important;
+        margin: 1mm 0 !important
+      }
+
+      input,
+      textarea {
+        border: 0 !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        outline: none !important;
+        padding: 0 !important;
+        color: #000 !important;
+        font-size: inherit !important;
+        min-width: 0 !important;
+        font-weight: inherit !important
+      }
+
+      .item-table {
+        width: 100% !important;
+        table-layout: fixed !important;
+        margin-top: 1mm !important;
+        font-size: 9pt !important;
+        border-bottom: 1px dashed #000 !important
+      }
+
+      .item-table th {
+        font-size: 9pt !important;
+        padding: 1mm 0 !important;
+        border-bottom: 1px dashed #000 !important;
+        font-weight: 800 !important
+      }
+
+      .item-table td {
+        padding: 1mm 0 !important;
+        font-weight: 800 !important
+      }
+
+      .summary {
+        margin-top: 1mm !important;
+        padding-bottom: 1mm !important;
+        border-bottom: 1px dashed #000 !important;
+        font-size: 9pt !important;
+        font-weight: 800 !important
+      }
+
+      .sumrow {
+        display: flex !important;
+        justify-content: space-between !important;
+        gap: 2mm !important;
+        padding: .4mm 0 !important;
+        font-weight: 800 !important
+      }
+
+      .sumrow.total {
+        font-size: 10pt !important;
+        margin-top: 1mm !important;
+        padding-top: 1mm !important;
+        font-weight: 800 !important
+      }
+
+      .sumrow .value {
+        text-align: right !important;
+        font-weight: 800 !important
+      }
+
+      .sumrow input {
+        text-align: right !important;
+        width: 100% !important;
+        font-weight: 800 !important
+      }
+
+      .footer {
+        font-size: 7pt !important;
+        margin-top: 2mm !important
+      }
+
+      button {
+        display: none !important
+      }
+
+      tr,
+      .sumrow,
+      .brand,
+      .meta {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toolbar">
+    <div><strong>Editable weighment bill</strong>
+      <p>Thermal receipt layout · 58mm printers</p>
+    </div>
+    <div class="actions"><button class="add-item" style="color: #fff;background: #008800;" id="addItem">+ Add item</button><button
+        id="reset">Reset</button><button class="primary" onclick="window.print()">Print receipt</button></div>
+  </div>
+  <main>
+    <section class="sheet" id="bill">
+      <header class="brand">
+        <h1><input aria-label="Business name" value="WEIGHMENT"
+            style="text-align:center;font-weight:800;letter-spacing:0.5px;font-size:16px"></h1>
+        <div class="address"><input aria-label="Address line 1" value="RADHAPURAM ROAD," style="text-align:center">
+        </div>
+        <div class="address"><input aria-label="Address line 2" value="TIRUNELVELI-(D.T) - 627 114."
+            style="text-align:center"></div>
+        <div class="phone">Mobile :- <input aria-label="Mobile number" value="63857 45767"
+            style="width:130px;font-weight:800"></div>
+      </header>
+      <section class="meta">
+        <div class="receipt-top-row">
+          <span class="no-label">No : <input aria-label="Bill number" value="11"
+              style="width:28px;display:inline-block;font-weight:800"></span>
+          <span class="type-label"><input aria-label="Bill type" value="Credit"
+              style="width:60px;text-align:center;display:inline-block;font-weight:800"></span>
+          <span class="date-label"><input aria-label="Bill date" value="16-10-2026"
+              style="width:90px;text-align:right;display:inline-block;font-weight:700"></span>
+        </div>
+        <div class="customer"><input aria-label="Customer name" value="M/s .MOHAN IRUKKANDHURAI"
+            style="font-weight:800"></div>
+        <div class="meta-line regular-line"><strong>Place :</strong><input aria-label="Place" value=""></div>
+        <div class="meta-line regular-line"><strong>Phone : 0</strong></div>
+        <div class="meta-line vehicle-line"><input aria-label="Vehicle number" value="TN74L2927 /"
+            style="font-weight:800"></div>
+      </section>
+      <table class="item-table">
+        <thead>
+          <tr>
+            <th>S.No. Description</th>
+            <th class="remove-col" style="width:30px"></th>
+          </tr>
+        </thead>
+        <tbody id="items">
+          <tr class="item">
+            <td><span style="font-weight:800;margin-right:12px">1</span><input class="desc"
+                aria-label="Item description" value="40MM" style="width:80%;display:inline-block;font-weight:800"></td>
+            <td class="remove-col"><button class="remove" type="button" style="background-color: rgb(255, 175, 175);">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <section class="summary">
+        <div class="sumrow"><span>Gross Wt</span><span class="value"><input id="gross" type="number"
+              aria-label="Gross weight" value="7290" style="text-align:right"></span></div>
+        <div class="sumrow"><span>Tare Wt</span><span class="value"><input id="tare" type="number"
+              aria-label="Tare weight" value="3230" style="text-align:right"></span></div>
+        <div class="sumrow net-divider"><span>Net Weight</span><span class="value" id="net">4060</span></div>
+        <div class="sumrow rate"><label for="unitRate">Rate</label><span class="value"><input id="unitRate"
+              type="number" aria-label="Rate per weight unit" value="600.00" step="0.01"></span></div>
+        <div class="sumrow total"><span>Net Amount</span><span class="value" id="amount">2436.00</span></div>
+      </section>
+      <!-- <footer class="footer"><span>Thank you</span><span><input aria-label="Footer note" value="" placeholder="Optional note" style="text-align:right"></span></footer> -->
+    </section>
+
+  </main>
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    function update() {
+      const gross = Number($('#gross').value) || 0, tare = Number($('#tare').value) || 0;
+      const net = gross - tare;
+      $('#net').textContent = net.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+      const rate = Number($('#unitRate').value) || 0;
+      $('#amount').textContent = (net * rate / 1000).toFixed(2);
+    }
+
+    function attach(row) {
+      row.querySelector('.remove').addEventListener('click', () => { row.remove(); update(); });
+      row.querySelector('.desc').addEventListener('input', update);
+    }
+
+    $$('#gross,#tare,#unitRate').forEach(el => el.addEventListener('input', update));
+    $$('.item').forEach(attach);
+
+    $('#addItem').addEventListener('click', () => {
+      const row = document.createElement('tr');
+      row.className = 'item';
+      row.innerHTML = '<td><span style="font-weight:800;margin-right:12px">2</span><input class="desc" aria-label="Item description" value="NEW ITEM" style="width:80%;display:inline-block;font-weight:800"></td><td class="remove-col"><button class="remove" type="button">Remove</button></td>';
+      $('#items').appendChild(row);
+      attach(row);
+      update();
+    });
+
+    $('#reset').addEventListener('click', () => location.reload());
+    update();
+  </script>
+</body>
+
+</html>
